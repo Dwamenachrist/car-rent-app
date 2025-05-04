@@ -21,17 +21,17 @@ export default function LoginScreen() {
       <StatusBar barStyle="light-content" />
       <View style={styles.heading}>
         <Image
-          source={require('../assets/Drive.png')}
+          source={require('../assets/images/Drive.png')}
           style={{ width: 122, height: 146, marginBottom: 20 }}
         />
         
         <Image
-          source={require('../assets/driveit.png')}
+          source={require('../assets/images/driveit.png')}
           style={{ width: 146, height: 38 }}
         />
       </View>
       <ImageBackground
-      source={require('../assets/bg.png')}
+      source={require('../assets/images/bg.png')}
       style={{ flex: 1, width: '100%', height: '100%' }}
       >
       <KeyboardAvoidingView

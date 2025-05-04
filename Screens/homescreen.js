@@ -10,7 +10,7 @@ const vehicles = [
     model: 'Yaris iA',
     price: '$350',
     engine: '4-Cyl 1.5 Liter',
-    image: require('../assets/toyota.png'),
+    image: require('../assets/images/toyota.png'),
   },
   {
     id: '2',
@@ -18,7 +18,7 @@ const vehicles = [
     model: 'i20',
     price: '$250',
     engine: '4-Cyl 1.2 Liter',
-    image: require('../assets/hyundai.png'),
+    image: require('../assets/images/hyundai.png'),
   },
   {
     id: '3',
@@ -26,7 +26,7 @@ const vehicles = [
     model: 'Civic',
     price: '$400',
     engine: '4-Cyl 2.0 Liter',
-    image: require('../assets/acura.png'),
+    image: require('../assets/images/acura.png'),
   },
   {
     id: '4',
@@ -34,14 +34,14 @@ const vehicles = [
     model: 'Focus',
     price: '$300',
     engine: '4-Cyl 1.6 Liter',
-    image: require('../assets/ford.png'),
+    image: require('../assets/images/ford.png'),
   },
 ];
 
 const categories = [
-  { id: '1', name: 'Standard', count: 56, image: require('../assets/toyota.png') },
-  { id: '2', name: 'Prestige', count: 22, image: require('../assets/acura.png') },
-  { id: '3', name: 'SUV', count: 34, image: require('../assets/ford.png') },
+  { id: '1', name: 'Standard', count: 56, image: require('../assets/images/car1.png') },
+  { id: '2', name: 'Prestige', count: 22, image: require('../assets/images/car2.png') },
+  { id: '3', name: 'SUV', count: 34, image: require('../assets/images/car3.png') },
 ];
 
 export default function VehicleScreen() {
@@ -49,10 +49,11 @@ export default function VehicleScreen() {
     Poppins_400Regular,
     Poppins_500Medium,
     Poppins_700Bold,
+    'Gilroy-Light': require('../assets/fonts/Gilroy-Light.ttf'),
+    'Gilroy-SemiBold': require('../assets/fonts/Gilroy-SemiBold.ttf'),
   });
 
   if (!fontsLoaded) {
-    // Show a loading indicator while fonts are being loaded
     return <ActivityIndicator size="large" color="#3366FF" style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} />;
   }
 
@@ -88,10 +89,10 @@ export default function VehicleScreen() {
       <FlatList
         data={vehicles}
         keyExtractor={(item) => item.id}
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.vehicleList}
         renderItem={({ item, index }) => (
-          <View style={[styles.vehicleCard, index === 0 && styles.selectedCard]}>
-            {/* Top Section */}
+          <View style={styles.vehicleCard}>
             <View style={styles.vehicleTop}>
               <View>
                 <Text style={styles.vehicleName}>{item.name}</Text>
@@ -104,8 +105,6 @@ export default function VehicleScreen() {
                 <Text style={styles.engineSpec}>{item.engine}</Text>
               </View>
             </View>
-
-            {/* Image Section */}
             <Image source={item.image} style={styles.vehicleImage} resizeMode="contain" />
           </View>
         )}
@@ -117,9 +116,10 @@ export default function VehicleScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f1f1f2',
+    backgroundColor: '#F5F5F5',
     paddingTop: 40,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
+    alignItems: 'center',
   },
   searchContainer: {
     width: 354,
@@ -140,10 +140,10 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     marginBottom: 10,
     paddingBottom: 120,
-    paddingLeft: 20,
+    paddingHorizontal: 20,
   },
   categoryCard: {
-    width: 151,
+    width: 130,
     height: 161,
     borderRadius: 20,
     backgroundColor: '#ffffff',
@@ -152,13 +152,12 @@ const styles = StyleSheet.create({
     marginRight: 40,
   },
   categoryCardActive: {
-    backgroundColor: '#3366FF',
+    backgroundColor: '#304FFE',
   },
   categoryImage: {
     width: 151,
     height: 86,
     marginLeft: -50,
-
   },
   categoryText: {
     fontFamily: 'Poppins_500Medium',
@@ -175,32 +174,30 @@ const styles = StyleSheet.create({
   },
   availableText: {
     fontFamily: 'Poppins_400Regular',
-    fontSize: 14,
-    marginTop: 10,
+    fontSize: 16,
+    marginTop: 40,
+    marginLeft: 20,
     marginBottom: 5,
+    alignSelf: 'flex-start',
   },
   vehicleList: {
     paddingBottom: 20,
   },
   vehicleCard: {
     width: 354,
-    height: 368,
+    height: 335,
     backgroundColor: '#F9F9F9',
-    borderRadius: 20,
+    borderRadius: 35,
     marginBottom: 20,
     padding: 15,
-  },
-  selectedCard: {
-    borderWidth: 2,
-    borderColor: '#3366FF',
   },
   vehicleTop: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   vehicleName: {
-    fontFamily: 'Poppins_700Bold',
-    fontSize: 20,
+    fontFamily: 'Gilroy-SemiBold',
+    fontSize: 34,
     color: '#000',
   },
   vehicleModel: {
@@ -217,8 +214,8 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   vehiclePrice: {
-    fontFamily: 'Poppins_700Bold',
-    fontSize: 20,
+    fontFamily: 'Gilroy-Light',
+    fontSize: 34,
     color: '#3366FF',
   },
   perMonth: {
