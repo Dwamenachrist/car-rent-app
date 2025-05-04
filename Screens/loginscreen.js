@@ -1,14 +1,26 @@
 import React from 'react';
-import { StyleSheet, Text, View, KeyboardAvoidingView, SafeAreaView, Platform, Image, StatusBar, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, KeyboardAvoidingView, SafeAreaView, Platform, Image, StatusBar, ImageBackground, Alert } from 'react-native';
 import Button from '../components/button';
 import TextInputComponent from '../components/textinput';
 import { useNavigation } from '@react-navigation/native';
 
 export default function LoginScreen() {
   const navigation = useNavigation();
+  const [username, setUsername] = React.useState('');
+  const [password, setPassword] = React.useState('');
 
   const handleLogin = () => {
-    console.log('Login button clicked!');
+    if (!username || !password) {
+      Alert.alert('Please enter both username and password.');
+      return;
+    }
+
+    if (username.length < 5 || password.length < 8) {
+      Alert.alert('Username must be at least 5 characters and password at least 8.');
+      return;
+    }
+
+    console.log('Login successful!');
     navigation.navigate('Home');
   };
 
@@ -39,8 +51,8 @@ export default function LoginScreen() {
         style={styles.container}
       >
         <View style={styles.inputs}>
-          <TextInputComponent placeholder="Sahar Soffer" />
-          <TextInputComponent placeholder="**************" secureTextEntry={true} />
+          <TextInputComponent placeholder="Sahar Soffer" onChangeText={setUsername}/>
+          <TextInputComponent placeholder="**************" secureTextEntry={true} onChangeText={setPassword} />
           <Text style={styles.forgotPassword} onPress={handleForgotPassword}>
             Forgot Password?
           </Text>

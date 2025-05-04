@@ -104,7 +104,7 @@ export default function VehicleScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={[
           styles.vehicleList,
-          filteredVehicles.length === 1 && { flexGrow: 1, justifyContent: 'center' }, // Dynamically center the single item
+          filteredVehicles.length === 1 && { flexGrow: 1, justifyContent: 'center' },
         ]}
         renderItem={({ item }) => (
           <View style={styles.vehicleCard}>
