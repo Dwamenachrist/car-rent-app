@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, FlatList, Image, StyleSheet, TouchableOpacity, StatusBar, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useFonts, Poppins_400Regular, Poppins_500Medium, Poppins_700Bold } from '@expo-google-fonts/poppins';
@@ -45,6 +45,7 @@ const categories = [
 ];
 
 export default function VehicleScreen() {
+  const [searchQuery, setSearchQuery] = useState('');
   const [fontsLoaded] = useFonts({
     Poppins_400Regular,
     Poppins_500Medium,
@@ -57,12 +58,23 @@ export default function VehicleScreen() {
     return <ActivityIndicator size="large" color="#3366FF" style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} />;
   }
 
+  const filteredVehicles = vehicles.filter(vehicle =>
+    vehicle.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    vehicle.model.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" />
       {/* Search Bar */}
       <View style={styles.searchContainer}>
-        <TextInput placeholder="Search for a car" placeholderTextColor="#212121" style={styles.searchInput} />
+        <TextInput
+          placeholder="Search for a car"
+          placeholderTextColor="#212121"
+          style={styles.searchInput}
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+        />
         <TouchableOpacity><Ionicons name="search" size={24} color="#212121" /></TouchableOpacity>
       </View>
 
@@ -87,11 +99,14 @@ export default function VehicleScreen() {
 
       {/* Vehicle Cards */}
       <FlatList
-        data={vehicles}
+        data={filteredVehicles}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.vehicleList}
-        renderItem={({ item, index }) => (
+        contentContainerStyle={[
+          styles.vehicleList,
+          filteredVehicles.length === 1 && { flexGrow: 1, justifyContent: 'center' }, // Dynamically center the single item
+        ]}
+        renderItem={({ item }) => (
           <View style={styles.vehicleCard}>
             <View style={styles.vehicleTop}>
               <View>
@@ -183,6 +198,11 @@ const styles = StyleSheet.create({
   vehicleList: {
     paddingBottom: 20,
   },
+  singleVehicleList: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+  },
   vehicleCard: {
     width: 354,
     height: 335,
@@ -190,6 +210,9 @@ const styles = StyleSheet.create({
     borderRadius: 35,
     marginBottom: 20,
     padding: 15,
+  },
+  singleVehicleCard: {
+    marginBottom: 0,
   },
   vehicleTop: {
     flexDirection: 'row',
