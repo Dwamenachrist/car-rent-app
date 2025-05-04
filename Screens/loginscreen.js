@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View, KeyboardAvoidingView, SafeAreaView, Platform, Image, StatusBar, ImageBackground } from 'react-native';
-import Button from './button';
-import TextInputComponent from './textinput';
+import Button from '../components/button';
+import TextInputComponent from '../components/textinput';
 import { useNavigation } from '@react-navigation/native';
 
 export default function LoginScreen() {
-const navigation = useNavigation();
+  const navigation = useNavigation();
 
   const handleLogin = () => {
     console.log('Login button clicked!');

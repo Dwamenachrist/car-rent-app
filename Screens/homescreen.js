@@ -1,0 +1,240 @@
+import React from 'react';
+import { View, Text, TextInput, FlatList, Image, StyleSheet, TouchableOpacity, StatusBar, ActivityIndicator } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useFonts, Poppins_400Regular, Poppins_500Medium, Poppins_700Bold } from '@expo-google-fonts/poppins';
+
+const vehicles = [
+  {
+    id: '1',
+    name: 'Toyota',
+    model: 'Yaris iA',
+    price: '$350',
+    engine: '4-Cyl 1.5 Liter',
+    image: require('../assets/toyota.png'),
+  },
+  {
+    id: '2',
+    name: 'Hyundai',
+    model: 'i20',
+    price: '$250',
+    engine: '4-Cyl 1.2 Liter',
+    image: require('../assets/hyundai.png'),
+  },
+  {
+    id: '3',
+    name: 'Honda',
+    model: 'Civic',
+    price: '$400',
+    engine: '4-Cyl 2.0 Liter',
+    image: require('../assets/acura.png'),
+  },
+  {
+    id: '4',
+    name: 'Ford',
+    model: 'Focus',
+    price: '$300',
+    engine: '4-Cyl 1.6 Liter',
+    image: require('../assets/ford.png'),
+  },
+];
+
+const categories = [
+  { id: '1', name: 'Standard', count: 56, image: require('../assets/toyota.png') },
+  { id: '2', name: 'Prestige', count: 22, image: require('../assets/acura.png') },
+  { id: '3', name: 'SUV', count: 34, image: require('../assets/ford.png') },
+];
+
+export default function VehicleScreen() {
+  const [fontsLoaded] = useFonts({
+    Poppins_400Regular,
+    Poppins_500Medium,
+    Poppins_700Bold,
+  });
+
+  if (!fontsLoaded) {
+    // Show a loading indicator while fonts are being loaded
+    return <ActivityIndicator size="large" color="#3366FF" style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} />;
+  }
+
+  return (
+    <View style={styles.container}>
+      <StatusBar barStyle="dark-content" />
+      {/* Search Bar */}
+      <View style={styles.searchContainer}>
+        <TextInput placeholder="Search for a car" placeholderTextColor="#212121" style={styles.searchInput} />
+        <TouchableOpacity><Ionicons name="search" size={24} color="#212121" /></TouchableOpacity>
+      </View>
+
+      {/* Categories */}
+      <FlatList
+        data={categories}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.categoryContainer}
+        renderItem={({ item, index }) => (
+          <View style={[styles.categoryCard, index === 0 && styles.categoryCardActive]}>
+            <Image source={item.image} style={styles.categoryImage} resizeMode="contain" />
+            <Text style={[styles.categoryText, index === 0 && styles.categoryTextActive]}>{item.name}</Text>
+            <Text style={[styles.categoryCount, index === 0 && styles.categoryTextActive]}>{item.count}</Text>
+          </View>
+        )}
+      />
+
+      {/* Heading */}
+      <Text style={styles.availableText}>Available vehicles</Text>
+
+      {/* Vehicle Cards */}
+      <FlatList
+        data={vehicles}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.vehicleList}
+        renderItem={({ item, index }) => (
+          <View style={[styles.vehicleCard, index === 0 && styles.selectedCard]}>
+            {/* Top Section */}
+            <View style={styles.vehicleTop}>
+              <View>
+                <Text style={styles.vehicleName}>{item.name}</Text>
+                <Text style={styles.vehicleModel}>{item.model}</Text>
+                <Text style={styles.engineLabel}>Engine</Text>
+              </View>
+              <View style={styles.vehicleInfoRight}>
+                <Text style={styles.vehiclePrice}>{item.price}</Text>
+                <Text style={styles.perMonth}>/ month</Text>
+                <Text style={styles.engineSpec}>{item.engine}</Text>
+              </View>
+            </View>
+
+            {/* Image Section */}
+            <Image source={item.image} style={styles.vehicleImage} resizeMode="contain" />
+          </View>
+        )}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f1f1f2',
+    paddingTop: 40,
+    paddingHorizontal: 20,
+  },
+  searchContainer: {
+    width: 354,
+    height: 60,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 30,
+    backgroundColor: '#ffffff',
+    paddingHorizontal: 20,
+    marginBottom: 20,
+  },
+  searchInput: {
+    flex: 1,
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 16,
+  },
+  categoryContainer: {
+    paddingVertical: 10,
+    marginBottom: 10,
+    paddingBottom: 120,
+    paddingLeft: 20,
+  },
+  categoryCard: {
+    width: 151,
+    height: 161,
+    borderRadius: 20,
+    backgroundColor: '#ffffff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 40,
+  },
+  categoryCardActive: {
+    backgroundColor: '#3366FF',
+  },
+  categoryImage: {
+    width: 151,
+    height: 86,
+    marginLeft: -50,
+
+  },
+  categoryText: {
+    fontFamily: 'Poppins_500Medium',
+    fontSize: 14,
+    color: '#212121',
+  },
+  categoryCount: {
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 12,
+    color: '#000',
+  },
+  categoryTextActive: {
+    color: '#ffffff',
+  },
+  availableText: {
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 14,
+    marginTop: 10,
+    marginBottom: 5,
+  },
+  vehicleList: {
+    paddingBottom: 20,
+  },
+  vehicleCard: {
+    width: 354,
+    height: 368,
+    backgroundColor: '#F9F9F9',
+    borderRadius: 20,
+    marginBottom: 20,
+    padding: 15,
+  },
+  selectedCard: {
+    borderWidth: 2,
+    borderColor: '#3366FF',
+  },
+  vehicleTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  vehicleName: {
+    fontFamily: 'Poppins_700Bold',
+    fontSize: 20,
+    color: '#000',
+  },
+  vehicleModel: {
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 14,
+    color: '#999',
+  },
+  engineLabel: {
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 14,
+    color: '#000',
+  },
+  vehicleInfoRight: {
+    alignItems: 'flex-end',
+  },
+  vehiclePrice: {
+    fontFamily: 'Poppins_700Bold',
+    fontSize: 20,
+    color: '#3366FF',
+  },
+  perMonth: {
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 14,
+    color: '#999',
+  },
+  engineSpec: {
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 14,
+    color: '#000',
+  },
+  vehicleImage: {
+    width: 350,
+    height: 200,
+    marginTop: 10,
+    alignSelf: 'center',
+  },
+});
